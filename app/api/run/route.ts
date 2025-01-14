@@ -27,7 +27,7 @@ export async function GET(request: Request) {
     const event: ics.EventAttributes = {
       title: a.title,
       // Super weird behavior with date.getDay()
-      start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()],
+      start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getUTCHours(), date.getUTCMinutes()],
       // This has huge potential of breaking but as long as stuff is due at 9:00 PM I don't have to think about it
       duration: {
         minutes: 0
@@ -38,7 +38,7 @@ export async function GET(request: Request) {
       description: `[Link] (https://jarrettbillingsley.github.io${a.link})`
     }
 
-    console.log([date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()],)
+    console.log([date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getUTCHours(), date.getUTCMinutes()],)
 
 
     events.push(event)
