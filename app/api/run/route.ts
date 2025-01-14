@@ -23,13 +23,19 @@ export async function GET(request: Request) {
 
   let events: ics.EventAttributes[] = []
   for (const a of assignments!) {
+    const date = a.dueDate
     const event: ics.EventAttributes = {
       title: a.title,
-      start: a.dueDate.toISOString(),
+      // Super weird behavior with date.getDay()
+      start: [date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()],
+      // This has huge potential of breaking but as long as stuff is due at 9:00 PM I don't have to think about it
       duration: {
-        minutes: 1
-      }
+        minutes: 0
+      },
+      classification: "PUBLIC",
+      sequence: 0
     }
+
 
     events.push(event)
 
@@ -53,9 +59,6 @@ export async function GET(request: Request) {
     addRandomSuffix: false
   })
 
-  console.log(getDownloadUrl(blob.url))
-
-  console.log(blob)
 
   return NextResponse.json(blob)
 }
