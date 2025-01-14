@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 import { parse, NodeType } from "node-html-parser"
-import { put, PutBlobResult } from "@vercel/blob"
+import { del, put, PutBlobResult } from "@vercel/blob"
 import { NextResponse } from 'next/server';
 import * as ics from "ics"
 import parser from "any-date-parser"
@@ -47,8 +47,13 @@ export async function GET(request: Request) {
   })
 
 
-  const blob = await put("447-cal.ics", val, {
+  // Make sure to delete because overwrites are not supported
+
+  await del("cal/447-cal.ics")
+
+  const blob = await put("cal/447-cal.ics", val, {
     access: "public",
+    
   })
 
   console.log(blob)
