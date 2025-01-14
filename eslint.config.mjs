@@ -9,7 +9,6 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-];
+const eslintConfig = [];
 
 export default eslintConfig;

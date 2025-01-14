@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 import { parse, NodeType } from "node-html-parser"
-import { put } from "@vercel/blob"
+import { put, PutBlobResult } from "@vercel/blob"
 import { NextResponse } from 'next/server';
 import * as ics from "ics"
 import parser from "any-date-parser"
@@ -21,7 +21,7 @@ export async function GET(request: Request) {
   const assignments = work?.querySelectorAll("li")
     ?.map((a, index) => ({ title: a.childNodes[0].innerText, dueDate: parser.fromString(a.childNodes.filter(n => n.nodeType == NodeType.TEXT_NODE).map(n => n.textContent).join("")) }))
 
-  const events: ics.EventAttributes[] = []
+  let events: ics.EventAttributes[] = []
   for (const a of assignments!) {
     const event: ics.EventAttributes = {
       title: a.title,
@@ -36,22 +36,22 @@ export async function GET(request: Request) {
 
   }
 
-  let blob
-
+  let val: string = ""
   ics.createEvents(events, async (err, value) => {
     if (err) {
       console.error(err)
 
       return NextResponse.json("Oh crap")
     }
-
-    blob = await put("447-cal.ics", value, {
-      access: "public"
-    })
-
-
+    val = value
   })
 
+
+  const blob = await put("447-cal.ics", val, {
+    access: "public",
+  })
+
+  console.log(blob)
 
   return NextResponse.json(blob)
 }
