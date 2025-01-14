@@ -9,17 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.1.4"
+    "@vercel/blob": "^0.27.0",
+    "@vercel/functions": "^1.5.2",
+    "any-date-parser": "^2.0.1",
+    "ics": "^3.8.1",
+    "next": "15.1.4",
+    "node-html-parser": "^7.0.1",
+    "node-ical": "^0.20.1"
   },
   "devDependencies": {
-    "typescript": "^5",
+    "@eslint/eslintrc": "^3",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.4",
-    "@eslint/eslintrc": "^3"
+    "typescript": "^5"
   }
 }
