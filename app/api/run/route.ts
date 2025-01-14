@@ -4,7 +4,6 @@ import { put } from "@vercel/blob"
 import { NextResponse } from 'next/server';
 import * as ics from "ics"
 import parser from "any-date-parser"
-import { redirect } from "next/navigation";
 
 export async function GET(request: Request) {
   // fetch Jarret's website
@@ -22,7 +21,7 @@ export async function GET(request: Request) {
   const assignments = work?.querySelectorAll("li")
     ?.map((a, index) => ({ title: a.childNodes[0].innerText, dueDate: parser.fromString(a.childNodes.filter(n => n.nodeType == NodeType.TEXT_NODE).map(n => n.textContent).join("")) }))
 
-  let events: ics.EventAttributes[] = []
+  const events: ics.EventAttributes[] = []
   for (const a of assignments!) {
     const event: ics.EventAttributes = {
       title: a.title,
