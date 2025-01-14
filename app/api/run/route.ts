@@ -25,8 +25,7 @@ export async function GET(request: Request) {
   for (const a of assignments!) {
     const event: ics.EventAttributes = {
       title: a.title,
-      startInputType: "utc",
-      start: a.dueDate.toUTCString(),
+      start: a.dueDate.toISOString(),
       duration: {
         minutes: 1
       }
