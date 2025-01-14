@@ -19,7 +19,7 @@ export async function GET(request: Request) {
 
   // Parse out assingnments
   const assignments = work?.querySelectorAll("li")
-    ?.map((a, index) => ({ title: a.childNodes[0].innerText, dueDate: parser.fromString(a.childNodes.filter(n => n.nodeType == NodeType.TEXT_NODE).map(n => n.textContent).join("")) }))
+    ?.map((a, index) => ({ title: a.childNodes[0].innerText, dueDate: parser.fromString(a.childNodes.filter(n => n.nodeType == NodeType.TEXT_NODE).map(n => n.textContent).join("")), link: a.querySelector("a")?.getAttribute("href") }))
 
   let events: ics.EventAttributes[] = []
   for (const a of assignments!) {
@@ -33,8 +33,12 @@ export async function GET(request: Request) {
         minutes: 0
       },
       classification: "PUBLIC",
-      sequence: 0
+      sequence: 0,
+      url: `https://jarrettbillingsley.github.io${a.link}`, 
+      description: `[Link] (https://jarrettbillingsley.github.io${a.link})`
     }
+
+    console.log([date.getFullYear(), date.getMonth() + 1, date.getDate(), date.getHours(), date.getMinutes()],)
 
 
     events.push(event)
@@ -51,12 +55,14 @@ export async function GET(request: Request) {
     val = value
   })
 
+  console.log(val)
 
   // Make sure to delete because overwrites are not supported
 
   const blob = await put("cal/447-cal.ics", val, {
     access: "public",
-    addRandomSuffix: false
+    addRandomSuffix: false,
+    cacheControlMaxAge:0
   })
 
 
